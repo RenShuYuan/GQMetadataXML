@@ -511,6 +511,11 @@ bool XmlStreamReader::writeIndexEntry(QXmlStreamWriter *xmlWriter, QTreeWidgetIt
                     orbitCode = xmlName.mid(3, 7);
                     xmlWriter->writeTextElement(key, orbitCode);
                 }
+                else if (xmlName.left(3)== "BJ2")
+                {
+                    orbitCode = xmlName.mid(3, 9);
+                    xmlWriter->writeTextElement(key, orbitCode);
+                }
                 else if (xmlName.left(3) == "ZY3" || xmlName.left(3) == "ZY1" ||xmlName.left(3) == "TH1")
                 {
                     orbitCode = xmlName.mid(3, 12);
@@ -528,6 +533,11 @@ bool XmlStreamReader::writeIndexEntry(QXmlStreamWriter *xmlWriter, QTreeWidgetIt
                     if ( xmlName.left(3)== "GF1" || xmlName.left(3)=="GF2")
                     {
                         bandDate = xmlName.mid(10, 8);
+                        xmlWriter->writeTextElement(key, bandDate);
+                    }
+                    else if (xmlName.left(3)== "BJ2")
+                    {
+                        bandDate = xmlName.mid(12, 8);
                         xmlWriter->writeTextElement(key, bandDate);
                     }
                     else if (xmlName.left(3) == "ZY3" || xmlName.left(3) == "ZY1" ||xmlName.left(3) == "TH1")

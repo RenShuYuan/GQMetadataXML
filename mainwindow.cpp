@@ -7,10 +7,10 @@
 #include <QPropertyAnimation>
 #include <QMessageBox>
 #include <QTreeWidget>
+#include <QTreeWidgetItem>
 #include <QPushButton>
 #include <QInputDialog>
 #include <QProgressDialog>
-#include <QTreeWidgetItem>
 #include <QDirIterator>
 #include <QFileDialog>
 #include <QStringList>
@@ -69,7 +69,7 @@ MainWindow::~MainWindow()
 {
     delete ui;
 
-    if (xmlnew != NULL)
+    if (xmlnew != nullptr)
     {
         delete xmlnew;
         xmlnew = 0;
@@ -676,6 +676,11 @@ void MainWindow::on_action_6_triggered()
             orbitCode = fileName.mid(3, 7);
             bandDate = fileName.mid(10, 8);
         }
+        else if (value == "BJ2")
+        {
+            orbitCode = fileName.mid(3, 9);
+            bandDate = fileName.mid(12, 8);
+        }
         else if (value == "ZY3" || value == "ZY1" || value == "TH1")
         {
             orbitCode = fileName.mid(3, 12);
@@ -1083,21 +1088,27 @@ void MainWindow::on_action_9_triggered()
     }
 
     //输出检查个数、错误信息
-    printInfo(yx_list.size(), errCount, cerr_list);
+    ui->label->setText(QString("批量制作完成: %1景影像正确.").arg(yx_list.size() - errCount));
+    ui->label_2->setText(QString("　　　　　　  %1景出现错误.").arg(errCount));
+    ui->label_2->setVisible(true);
 
-    //输出错误信息
-//    long count = 0;
-//    QString later_str;
-//    foreach (QString str, cerr_list)
-//    {
-//        if (later_str != str)
-//        {
-//            QTreeWidgetItem *item = new QTreeWidgetItem(ui->treeWidget);
-//            item->setText(0, QString::number(++count));
-//            item->setText(1, str);
-//            later_str = str;
-//        }
-//    }
+    ui->treeWidget->clear();
+
+    //设置treeWidget表头
+    QStringList strList;
+    strList << "序号" << "错误信息";
+    ui->treeWidget->setHeaderLabels(strList);
+
+    long count = 0;
+    foreach (QString str, cerr_list)
+    {
+        QTreeWidgetItem *item = new QTreeWidgetItem(ui->treeWidget);
+        item->setText(0, QString::number(++count));
+        item->setText(1, str);
+    }
+
+    //将错误列表清空
+    cerr_list.clear();
 }
 
 void MainWindow::on_action_10_triggered()
