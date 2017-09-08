@@ -69,7 +69,7 @@ MainWindow::~MainWindow()
 {
     delete ui;
 
-    if (xmlnew != nullptr)
+    if (xmlnew != 0)
     {
         delete xmlnew;
         xmlnew = 0;
